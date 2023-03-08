@@ -61,7 +61,7 @@ QList<ItemTemplateInfo> prepareData(QList<ItemTemplateInfo> &infos)
 QString findText(TextType type, int index)
 {
     DatabaseOperations db;
-    QString retVal;
+    QString retVal = "";
     QList<DatabaseOperations::Entry> data;
 
     switch(type)
@@ -69,7 +69,7 @@ QString findText(TextType type, int index)
         case TextType::FULL_NAME:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(index >= data.count())
+            if(data.count() == 0)
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).first_name;
@@ -142,7 +142,7 @@ QString findText(TextType type, int index)
         case TextType::EMAIL_ADDRESS:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(index >= data.count())
+            if(data.count() == 0)
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).email_address;
@@ -150,7 +150,7 @@ QString findText(TextType type, int index)
         case TextType::ADDRESS:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(index >= data.count())
+            if(data.count() == 0)
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).address;
@@ -158,7 +158,7 @@ QString findText(TextType type, int index)
         case TextType::BIRTH_DATE:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(index >= data.count())
+            if(data.count() == 0)
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).birth_date.toString();
@@ -166,7 +166,7 @@ QString findText(TextType type, int index)
         case TextType::PHONE_NUMBER:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(index >= data.count())
+            if(data.count() == 0)
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).phone_number;
@@ -214,7 +214,7 @@ QString findText(TextType type, int index)
         case TextType::NATIONALITY:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(index >= data.count())
+            if(data.count() == 0)
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).nationality;
@@ -280,7 +280,9 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                             HPDF_Image_SetMaskImage(image, mask);
                         }
 
-                        HPDF_Page_DrawImage(page, image,info.pos.x(), HPDF_Page_GetHeight(page) - info.pos.y(), info.size.y(), info.size.x());
+                        HPDF_Page_DrawImage(page, image, info.page_margin + info.pos.x(),
+                                            HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y()),
+                                            info.size.y(), info.size.x());
                         continue;
                     case ItemType::TEXT:
                         HPDF_Font font;
@@ -291,9 +293,9 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                         HPDF_Page_BeginText(page);
                         HPDF_Page_SetTextLeading(page, info.text.font_size * info.text.line_spacing);
                         HPDF_Page_SetRGBFill(page, info.text.color.redF(), info.text.color.greenF(), info.text.color.blueF());
-                        HPDF_Page_TextRect(page, info.pos.x(), HPDF_Page_GetHeight(page) - info.pos.y(), info.pos.x() + info.size.x(),
-                                           info.pos.y() + info.size.y(), findText(info.text.type, info.text.index).toUtf8(),
-                                           HPDF_TALIGN_LEFT, nullptr);
+                        HPDF_Page_TextRect(page, info.page_margin + info.pos.x(), HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y()),
+                                           info.pos.x() + info.size.x(), info.pos.y() + info.size.y(),
+                                           findText(info.text.type, info.text.index).toUtf8(), HPDF_TALIGN_LEFT, nullptr);
                         HPDF_Page_EndText(page);
                         continue;
                     case ItemType::SHAPE:
@@ -302,20 +304,23 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                             case ShapeType::RECTANGLE:
                                 HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
                                                  info.shape.fill_color.blueF());
-                                HPDF_Page_Rectangle(page, info.shape.pos.x(), HPDF_Page_GetHeight(page) - info.shape.pos.y(),
+                                HPDF_Page_Rectangle(page, info.page_margin + info.shape.pos.x(),
+                                                    HPDF_Page_GetHeight(page) - (info.page_margin + info.shape.pos.y()),
                                                     info.shape.size.x(), info.shape.size.y());
                                 HPDF_Page_Fill(page);
                                 continue;
                             case ShapeType::CIRCLE:
                                 HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
                                                      info.shape.fill_color.blueF());
-                                HPDF_Page_Circle(page, info.shape.pos.x(), HPDF_Page_GetHeight(page) - info.shape.pos.y(), info.shape.size.x());
+                                HPDF_Page_Circle(page, info.page_margin + info.shape.pos.x(),
+                                                 HPDF_Page_GetHeight(page) - (info.page_margin + info.shape.pos.y()), info.shape.size.x());
                                 HPDF_Page_Fill(page);
                                 continue;
                             case ShapeType::ELLIPSE:
                                 HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
                                                      info.shape.fill_color.blueF());
-                                HPDF_Page_Ellipse(page, info.shape.pos.x(), HPDF_Page_GetHeight(page) - info.shape.pos.y(),
+                                HPDF_Page_Ellipse(page, info.page_margin + info.shape.pos.x(),
+                                                  HPDF_Page_GetHeight(page) - (info.page_margin + info.shape.pos.y()),
                                                   info.shape.size.x(), info.shape.size.y());
                                 HPDF_Page_Fill(page);
                                 continue;
