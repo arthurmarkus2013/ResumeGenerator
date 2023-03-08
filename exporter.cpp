@@ -69,7 +69,7 @@ QString findText(TextType type, int index)
         case TextType::FULL_NAME:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(data.count() == 0)
+            if(data.empty())
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).first_name;
@@ -142,7 +142,7 @@ QString findText(TextType type, int index)
         case TextType::EMAIL_ADDRESS:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(data.count() == 0)
+            if(data.empty())
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).email_address;
@@ -150,7 +150,7 @@ QString findText(TextType type, int index)
         case TextType::ADDRESS:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(data.count() == 0)
+            if(data.empty())
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).address;
@@ -158,7 +158,7 @@ QString findText(TextType type, int index)
         case TextType::BIRTH_DATE:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(data.count() == 0)
+            if(data.empty())
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).birth_date.toString();
@@ -166,7 +166,7 @@ QString findText(TextType type, int index)
         case TextType::PHONE_NUMBER:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(data.count() == 0)
+            if(data.empty())
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).phone_number;
@@ -214,7 +214,7 @@ QString findText(TextType type, int index)
         case TextType::NATIONALITY:
             data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
 
-            if(data.count() == 0)
+            if(data.empty())
                 return QString();
 
             retVal = std::get<PersonalInfoEntry>(data.at(0)).nationality;
