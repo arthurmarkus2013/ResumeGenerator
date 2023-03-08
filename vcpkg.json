@@ -1,0 +1,14 @@
+{
+    "name": "ResumeGenerator",
+    "version": "1.0",
+    "dependencies": [
+        {
+            "name": "libharu",
+            "version>=": "2.4.3"
+        },
+        {
+            "name": "xerces-c",
+            "version>=": "3.2.4"
+        }
+    ]
+  }

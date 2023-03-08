@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:simpleType name="pageOrientation">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="Portrait" />
+            <xs:enumeration value="Landscape" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="textTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="FullName" />
+            <xs:enumeration value="Nationality" />
+            <xs:enumeration value="BirthDate" />
+            <xs:enumeration value="EmailAddress" />
+            <xs:enumeration value="Address" />
+            <xs:enumeration value="WorkExperienceHeader" />
+            <xs:enumeration value="EducationHeader" />
+            <xs:enumeration value="CompanyName" />
+            <xs:enumeration value="CompanyLocation" />
+            <xs:enumeration value="JobTitle" />
+            <xs:enumeration value="JobStartDate" />
+            <xs:enumeration value="JobEndDate" />
+            <xs:enumeration value="TechnologiesUsed" />
+            <xs:enumeration value="Duties" />
+            <xs:enumeration value="SchoolName" />
+            <xs:enumeration value="SchoolLocation" />
+            <xs:enumeration value="EducationStartDate" />
+            <xs:enumeration value="EducationEndDate" />
+            <xs:enumeration value="CurseName" />
+            <xs:enumeration value="PhoneNumber" />
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:complexType name="rectangleType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="rectangle" type="rectangleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="ellipse" type="ellipseType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
+        <xs:attribute name="x" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="y" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="width" type="xs:positiveInteger"
+            use="required" />
+        <xs:attribute name="height" type="xs:positiveInteger"
+            use="required" />
+        <xs:attribute name="color" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="ellipseType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="rectangle" type="rectangleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="ellipse" type="ellipseType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
+        <xs:attribute name="x" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="y" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="width" type="xs:positiveInteger"
+            use="required" />
+        <xs:attribute name="height" type="xs:positiveInteger"
+            use="required" />
+        <xs:attribute name="color" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="circleType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="rectangle" type="rectangleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="ellipse" type="ellipseType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
+        <xs:attribute name="x" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="y" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="radius" type="xs:positiveInteger"
+            use="required" />
+        <xs:attribute name="color" type="xs:string" use="required" />
+    </xs:complexType>
+    <xs:complexType name="imageType">
+        <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="rectangle" type="rectangleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="ellipse" type="ellipseType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+        </xs:choice>
+        <xs:attribute name="x" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="y" type="xs:positiveInteger" use="required" />
+        <xs:attribute name="width" type="xs:positiveInteger"
+            use="optional" />
+        <xs:attribute name="height" type="xs:positiveInteger"
+            use="optional" />
+        <xs:attribute name="src" type="xs:string" use="required" />
+        <xs:attribute name="mask" type="xs:string" use="optional" />
+    </xs:complexType>
+    <xs:complexType name="textType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="x" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="y" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="width" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="height" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="type" type="textTypeEnum" use="required" />
+                <xs:attribute name="fontSize" type="xs:integer"
+                    use="optional" />
+                <xs:attribute name="fontFamily" type="xs:string"
+                    use="optional" />
+                <xs:attribute name="lineSpacing" type="xs:float"
+                    use="optional" />
+                <xs:attribute name="color" type="xs:string"
+                    use="optional" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
+    <xs:element name="document">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="page" minOccurs="1" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:choice minOccurs="0" maxOccurs="unbounded">
+                            <xs:element name="rectangle" minOccurs="0" maxOccurs="unbounded"
+                                type="rectangleType" />
+                            <xs:element name="ellipse" minOccurs="0" maxOccurs="unbounded"
+                                type="ellipseType" />
+                            <xs:element name="circle" minOccurs="0" maxOccurs="unbounded"
+                                type="circleType" />
+                            <xs:element name="image" minOccurs="0" maxOccurs="unbounded"
+                                type="imageType" />
+                            <xs:element name="text" minOccurs="0" maxOccurs="unbounded" id="text"
+                                type="textType" />
+                        </xs:choice>
+                        <xs:attribute name="orientation" type="pageOrientation" use="optional" />
+                        <xs:attribute name="pageMargin" type="xs:integer" use="optional" />
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
