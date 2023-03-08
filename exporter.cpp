@@ -280,7 +280,7 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                             HPDF_Image_SetMaskImage(image, mask);
                         }
 
-                        HPDF_Page_DrawImage(page, image, info.pos.x(), info.pos.y(), info.size.y(), info.size.x());
+                        HPDF_Page_DrawImage(page, image,info.pos.x(), HPDF_Page_GetHeight(page) - info.pos.y(), info.size.y(), info.size.x());
                         continue;
                     case ItemType::TEXT:
                         HPDF_Font font;
@@ -291,7 +291,7 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                         HPDF_Page_BeginText(page);
                         HPDF_Page_SetTextLeading(page, info.text.font_size * info.text.line_spacing);
                         HPDF_Page_SetRGBFill(page, info.text.color.redF(), info.text.color.greenF(), info.text.color.blueF());
-                        HPDF_Page_TextRect(page, info.pos.x(), info.pos.y(), info.pos.x() + info.size.x(),
+                        HPDF_Page_TextRect(page, info.pos.x(), HPDF_Page_GetHeight(page) - info.pos.y(), info.pos.x() + info.size.x(),
                                            info.pos.y() + info.size.y(), findText(info.text.type, info.text.index).toUtf8(),
                                            HPDF_TALIGN_LEFT, nullptr);
                         HPDF_Page_EndText(page);
@@ -300,18 +300,23 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                         switch(info.shape.type)
                         {
                             case ShapeType::RECTANGLE:
-                                HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(), info.shape.fill_color.blueF());
-                                HPDF_Page_Rectangle(page, info.shape.pos.x(), info.shape.pos.y(), info.shape.size.x(), info.shape.size.y());
+                                HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
+                                                 info.shape.fill_color.blueF());
+                                HPDF_Page_Rectangle(page, info.shape.pos.x(), HPDF_Page_GetHeight(page) - info.shape.pos.y(),
+                                                    info.shape.size.x(), info.shape.size.y());
                                 HPDF_Page_Fill(page);
                                 continue;
                             case ShapeType::CIRCLE:
-                                HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(), info.shape.fill_color.blueF());
-                                HPDF_Page_Circle(page, info.shape.pos.x(), info.shape.pos.y(), info.shape.size.x());
+                                HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
+                                                     info.shape.fill_color.blueF());
+                                HPDF_Page_Circle(page, info.shape.pos.x(), HPDF_Page_GetHeight(page) - info.shape.pos.y(), info.shape.size.x());
                                 HPDF_Page_Fill(page);
                                 continue;
                             case ShapeType::ELLIPSE:
-                                HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(), info.shape.fill_color.blueF());
-                                HPDF_Page_Ellipse(page, info.shape.pos.x(), info.shape.pos.y(), info.shape.size.x(), info.shape.size.y());
+                                HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
+                                                     info.shape.fill_color.blueF());
+                                HPDF_Page_Ellipse(page, info.shape.pos.x(), HPDF_Page_GetHeight(page) - info.shape.pos.y(),
+                                                  info.shape.size.x(), info.shape.size.y());
                                 HPDF_Page_Fill(page);
                                 continue;
                             default:
