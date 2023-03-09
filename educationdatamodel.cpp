@@ -26,6 +26,8 @@ void EducationDataModel::invalidateCache()
 
 void EducationDataModel::persistValidChanges()
 {
+    m_hasInvalidData = false;
+
     for(auto &item : m_entriesCache)
     {
         if(item.isValid())
@@ -186,8 +188,8 @@ bool EducationDataModel::removeRows(int row, int count, const QModelIndex &paren
     beginRemoveRows(parent, row, row + count - 1);
     for(int i = 0; i < count; i++)
     {
-        auto item = m_entriesCache.at(i);
-        m_entriesCache.removeAt(i);
+        auto item = m_entriesCache.at(row + i);
+        m_entriesCache.removeAt(row + i);
         m_DeletionQueue.append(item);
     }
     endRemoveRows();

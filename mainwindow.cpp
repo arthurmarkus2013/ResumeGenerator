@@ -79,6 +79,7 @@ void MainWindow::timerTriggered()
 void MainWindow::persistValidChanges()
 {
     PersonalInfoEntry entry;
+    hasInvalidData = false;
 
     if(db->totalEntries(EntryType::PERSONAL_INFO_ENTRY) > 0)
         entry = std::get<PersonalInfoEntry>(db->getEntries(EntryType::PERSONAL_INFO_ENTRY).at(0));
