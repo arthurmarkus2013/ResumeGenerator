@@ -39,13 +39,18 @@ void EducationDataModel::persistValidChanges()
             m_hasInvalidData = true;
     }
 
-    for(int i = 0; i < m_DeletionQueue.count(); i++)
+    int count = m_DeletionQueue.count();
+
+    for(int i = 0; i < count; i++)
     {
-        auto item = m_DeletionQueue.at(i);
+        if(m_DeletionQueue.empty())
+            break;
+
+        auto item = m_DeletionQueue.takeFirst();
 
         if(item.isValid())
-            if(db->removeEntry(item, EntryType::EDUCATION_ENTRY))
-                m_DeletionQueue.removeAt(i);
+            if(!db->removeEntry(item, EntryType::EDUCATION_ENTRY))
+                m_DeletionQueue.append(item);
     }
 }
 
