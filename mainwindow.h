@@ -58,5 +58,6 @@ private:
     Exporter *exporter;
     QLabel *lblTepmplatePath;
     QLabel *lblCurrentStatus;
+    bool hasInvalidData = false;
 };
 #endif // MAINWINDOW_H

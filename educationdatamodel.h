@@ -15,6 +15,7 @@ public:
     ~EducationDataModel();
 
     void persistValidChanges();
+    bool hasInvalidData() { return m_hasInvalidData; }
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -47,6 +48,7 @@ private:
     QList<EducationEntry> m_entriesCache;
     QList<EducationEntry> m_DeletionQueue;
     DatabaseOperations *db;
+    bool m_hasInvalidData = false;
 };
 
 #endif // EDUCATIONDATAMODEL_H

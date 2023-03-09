@@ -93,8 +93,12 @@ void MainWindow::persistValidChanges()
     entry.phone_number = ui->editPhoneNumber->text();
 
     if(entry.isValid())
+    {
         if(!db->updateEntry(entry, EntryType::PERSONAL_INFO_ENTRY))
             entry.personal_info_id = db->addEntry(entry, EntryType::PERSONAL_INFO_ENTRY);
+    }
+    else
+        hasInvalidData = true;
 }
 
 void MainWindow::closeEvent(QCloseEvent *event)
@@ -105,7 +109,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
     weModel->persistValidChanges();
     eduModel->persistValidChanges();
 
-    event->accept();
+    if(hasInvalidData || weModel->hasInvalidData() || eduModel->hasInvalidData())
+    {
+        auto result = QMessageBox::question(this, tr("Warning"),
+                                            tr("Do you really wanna exit? You have some unfinished entries, that won't be persisted!"));
+
+        event->setAccepted(result == QMessageBox::StandardButton::Yes);
+    }
 }
 
 void MainWindow::populateStatusBar()

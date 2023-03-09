@@ -29,8 +29,12 @@ void EducationDataModel::persistValidChanges()
     for(auto &item : m_entriesCache)
     {
         if(item.isValid())
+        {
             if(!db->updateEntry(item, EntryType::EDUCATION_ENTRY))
                 item.education_id = db->addEntry(item, EntryType::EDUCATION_ENTRY);
+        }
+        else
+            m_hasInvalidData = true;
     }
 
     for(int i = 0; i < m_DeletionQueue.count(); i++)

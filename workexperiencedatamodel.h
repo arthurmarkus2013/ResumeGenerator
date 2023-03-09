@@ -15,6 +15,7 @@ public:
     ~WorkExperienceDataModel();
 
     void persistValidChanges();
+    bool hasInvalidData() { return m_hasInvalidData; }
 
     // Header:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
@@ -47,6 +48,7 @@ private:
     QList<WorkExperienceEntry> m_entriesCache;
     QList<WorkExperienceEntry> m_DeletionQueue;
     DatabaseOperations *db;
+    bool m_hasInvalidData = false;
 };
 
 #endif // WORKEXPERIENCEDATAMODEL_H

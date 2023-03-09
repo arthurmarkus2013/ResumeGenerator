@@ -29,8 +29,12 @@ void WorkExperienceDataModel::persistValidChanges()
     for(auto &item : m_entriesCache)
     {
         if(item.isValid())
+        {
             if(!db->updateEntry(item, EntryType::WORK_EXPERIENCE_ENTRY))
                 item.work_Experience_id = db->addEntry(item, EntryType::WORK_EXPERIENCE_ENTRY);
+        }
+        else
+            m_hasInvalidData = true;
     }
 
     for(int i = 0; i < m_DeletionQueue.count(); i++)
