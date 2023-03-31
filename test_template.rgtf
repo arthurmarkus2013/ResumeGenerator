@@ -107,5 +107,8 @@
         </rectangle>
         <ellipse x="250" y="390" width="90" height="100" color="#00ffcc" />
         <circle x="100" y="500" radius="50" color="#ccff00" />
+        <line fromX="90" fromY="90" toX="450" toY="450" color="#ff00ff" />
+        <line fromX="110" fromY="110" toX="470" toY="470" color="#ff00ff" />
+        <line fromX="130" fromY="130" toX="490" toY="490" color="#ff00ff" />
     </page>
 </document>

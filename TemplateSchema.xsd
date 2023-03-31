@@ -116,6 +116,22 @@
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>
+    <xs:complexType name="lineType">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute name="fromX" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="fromY" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="toX" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="toY" type="xs:positiveInteger"
+                    use="required" />
+                <xs:attribute name="color" type="xs:string"
+                    use="optional" />
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
     <xs:element name="document">
         <xs:complexType>
             <xs:sequence>
@@ -130,8 +146,10 @@
                                 type="circleType" />
                             <xs:element name="image" minOccurs="0" maxOccurs="unbounded"
                                 type="imageType" />
-                            <xs:element name="text" minOccurs="0" maxOccurs="unbounded" id="text"
+                            <xs:element name="text" minOccurs="0" maxOccurs="unbounded"
                                 type="textType" />
+                            <xs:element name="line" minOccurs="0" maxOccurs="unbounded"
+                                type="lineType" />
                         </xs:choice>
                         <xs:attribute name="orientation" type="pageOrientation" use="optional" />
                         <xs:attribute name="pageMargin" type="xs:integer" use="optional" />

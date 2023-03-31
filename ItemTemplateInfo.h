@@ -10,6 +10,7 @@ enum class ItemType
   IMAGE,
   TEXT,
   SHAPE,
+  LINE,
   PAGE
 };
 
@@ -54,7 +55,7 @@ struct ShapeInfo
   bool isValid()
   {
     bool validType = ((type == ShapeType::CIRCLE) || (type == ShapeType::ELLIPSE) || (type == ShapeType::RECTANGLE));
-    bool validRect = ((pos.x() >= 0) && (pos.y() >= 0) && (size.x() != 0) && (size.y() != 0));
+    bool validRect = ((pos.x() >= 0) && (pos.y() >= 0) && (size.x() > 0) && (size.y() > 0));
 
     return (validType && validRect && fill_color.isValid());
   }
@@ -207,6 +208,27 @@ struct ImageInfo
   }
 };
 
+struct LineInfo
+{
+  QPoint startPos;
+  QPoint endPos;
+  QColor color;
+
+  bool isValid()
+  {
+    return ((startPos.x() >= 0) && (startPos.y() >= 0) && (endPos.x() > 0) && (endPos.y() > 0));
+  }
+
+  QString toString()
+  {
+    return "LineInfo {\n\tfromX: " + QString::number(startPos.y()) +
+           ",\n\tfromY: " + QString::number(startPos.y()) +
+           ",\n\ttoX: " + QString::number(endPos.x()) +
+           ",\n\ttoY: " + QString::number(endPos.y()) +
+           ",\n\tcolor: " + color.name() + "\n}";
+  }
+};
+
 enum class PageOrientation
 {
   PORTRAIT,
@@ -223,6 +245,7 @@ struct ItemTemplateInfo
   TextInfo text;
   ShapeInfo shape;
   ImageInfo image;
+  LineInfo line;
   QList<ItemTemplateInfo> children;
 
   bool isValid()
@@ -239,6 +262,8 @@ struct ItemTemplateInfo
     case ItemType::TEXT:
       return (text.isValid() && (pos.x() >= 0) && (pos.y() >= 0) &&
               (size.x() > 0) && (size.y() > 0));
+    case ItemType::LINE:
+      return line.isValid();
     default:
       return false;
     }
@@ -259,6 +284,9 @@ struct ItemTemplateInfo
     case ItemType::SHAPE:
       itemName = "Shape";
       break;
+    case ItemType::LINE:
+      itemName = "Line";
+      break;
     case ItemType::PAGE:
       itemName = "Page";
       break;
@@ -269,7 +297,7 @@ struct ItemTemplateInfo
 
     QString stringified_children;
 
-    for (ItemTemplateInfo info : children)
+    for(ItemTemplateInfo info : children)
     {
       stringified_children += "{\n\t" + info.toString() + "\n}\n";
     }
@@ -278,8 +306,8 @@ struct ItemTemplateInfo
            ",\n\t\ty: " + QString::number(pos.y()) + "},\n\t\tsize: {x: " + QString::number(size.x()) +
            ",\n\t\theight: " + QString::number(size.y()) + "\n\t},\n\tpage_margin: " + QString::number(page_margin) +
            ",\n\ttext: " + text.toString() + ",\n\tshape: " + shape.toString() + ",\n\timage: " + image.toString() +
-           ",\n\tPageOrientation: " + ((orientation == PageOrientation::PORTRAIT) ? "\"Portrait\"" : "\"Landscape\"") +
-           ",\n\tchildren: [\n" + stringified_children + "]\n}";
+           ",\n\tpageOrientation: " + ((orientation == PageOrientation::PORTRAIT) ? "\"Portrait\"" : "\"Landscape\"") +
+           ",\n\tline: " + line.toString() + ",\n\tchildren: [\n" + stringified_children + "]\n}";
   }
 };
 

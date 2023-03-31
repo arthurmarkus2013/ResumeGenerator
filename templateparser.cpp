@@ -224,6 +224,31 @@ bool mapTextAttributes(ItemTemplateInfo &info, QString attr_name, QString attr_v
     return true;
 }
 
+bool mapLineAttributes(ItemTemplateInfo &info, QString attr_name, QString attr_value)
+{
+    if(attr_name == "fromX")
+    {
+        info.line.startPos.setX(attr_value.toInt());
+    } else if(attr_name == "fromY")
+    {
+        info.line.startPos.setY(attr_value.toInt());
+    } else if(attr_name == "toX")
+    {
+        info.line.endPos.setX(attr_value.toInt());
+    } else if(attr_name == "toY")
+    {
+        info.line.endPos.setY(attr_value.toInt());
+    } else if(attr_name == "color")
+    {
+        info.text.color = QColor(attr_value);
+    } else
+    {
+        return false;
+    }
+
+    return true;
+}
+
 bool mapAttributes(ItemTemplateInfo &info, DOMElement *node)
 {
     auto attrs = node->getAttributes();
@@ -259,6 +284,10 @@ bool mapAttributes(ItemTemplateInfo &info, DOMElement *node)
             {
                 if(!mapTextAttributes(info, attr_name, attr_value))
                     return false;
+            } else if(info.type == ItemType::LINE)
+            {
+                if(!mapLineAttributes(info, attr_name, attr_value))
+                    return false;
             } else
             {
                 return false;
@@ -292,6 +321,9 @@ bool determineChildType(ItemTemplateInfo &info, QString tagName)
     {
         info.type = ItemType::SHAPE;
         info.shape.type = ShapeType::ELLIPSE;
+    } else if(tagName == "line")
+    {
+        info.type = ItemType::LINE;
     } else
     {
         return false;

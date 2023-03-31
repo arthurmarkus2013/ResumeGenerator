@@ -328,6 +328,12 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                                 continue;
                         }
                         continue;
+                    case ItemType::LINE:
+                        HPDF_Page_MoveTo(page, info.page_margin + info.line.startPos.x(),
+                                         HPDF_Page_GetHeight(page) - (info.page_margin + info.line.startPos.y()));
+                        HPDF_Page_LineTo(page, info.line.endPos.x(), info.line.endPos.y());
+                        HPDF_Page_Stroke(page);
+                        continue;
                     default:
                         // TODO: Add a warning message???
                         continue;
