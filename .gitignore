@@ -72,3 +72,6 @@ CMakeLists.txt.user*
 *.dll
 *.exe
 
+# Custom Entries
+image_1.jpg
+image_2.png

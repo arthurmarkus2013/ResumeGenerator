@@ -38,6 +38,8 @@ private slots:
 
     void on_actionE_xit_triggered();
 
+    void on_btnFindProfilePhoto_clicked();
+
 protected:
     void closeEvent(QCloseEvent *event) override;
 

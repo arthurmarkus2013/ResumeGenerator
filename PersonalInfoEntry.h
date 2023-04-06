@@ -14,6 +14,7 @@ struct PersonalInfoEntry {
     QString address;
     QString email_address;
     QString phone_number;
+    QString profile_photo;
 
     bool isValid() const
     {

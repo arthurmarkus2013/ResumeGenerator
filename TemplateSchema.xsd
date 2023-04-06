@@ -30,6 +30,12 @@
             <xs:enumeration value="PhoneNumber" />
         </xs:restriction>
     </xs:simpleType>
+    <xs:simpleType name="imageTypeEnum">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="ProfilePhoto" />
+            <xs:enumeration value="Decoration" />
+        </xs:restriction>
+    </xs:simpleType>
     <xs:complexType name="rectangleType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="rectangle" type="rectangleType" minOccurs="0" maxOccurs="unbounded" />
@@ -37,6 +43,7 @@
             <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="line" type="lineType" minOccurs="0" maxOccurs="unbounded" />
         </xs:choice>
         <xs:attribute name="x" type="xs:positiveInteger" use="required" />
         <xs:attribute name="y" type="xs:positiveInteger" use="required" />
@@ -53,6 +60,7 @@
             <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="line" type="lineType" minOccurs="0" maxOccurs="unbounded" />
         </xs:choice>
         <xs:attribute name="x" type="xs:positiveInteger" use="required" />
         <xs:attribute name="y" type="xs:positiveInteger" use="required" />
@@ -69,6 +77,7 @@
             <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="line" type="lineType" minOccurs="0" maxOccurs="unbounded" />
         </xs:choice>
         <xs:attribute name="x" type="xs:positiveInteger" use="required" />
         <xs:attribute name="y" type="xs:positiveInteger" use="required" />
@@ -83,6 +92,7 @@
             <xs:element name="circle" type="circleType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="image" type="imageType" minOccurs="0" maxOccurs="unbounded" />
             <xs:element name="text" type="textType" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element name="line" type="lineType" minOccurs="0" maxOccurs="unbounded" />
         </xs:choice>
         <xs:attribute name="x" type="xs:positiveInteger" use="required" />
         <xs:attribute name="y" type="xs:positiveInteger" use="required" />
@@ -92,6 +102,7 @@
             use="optional" />
         <xs:attribute name="src" type="xs:string" use="required" />
         <xs:attribute name="mask" type="xs:string" use="optional" />
+        <xs:attribute name="type" type="imageTypeEnum" use="required" />
     </xs:complexType>
     <xs:complexType name="textType">
         <xs:simpleContent>

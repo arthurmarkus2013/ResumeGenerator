@@ -65,6 +65,7 @@ void MainWindow::fetchPersonalInfo()
     ui->editEmailAddress->setText(entry.email_address);
     ui->editNationality->setText(entry.nationality);
     ui->editPhoneNumber->setText(entry.phone_number);
+    ui->editProfilePhoto->setText(entry.profile_photo);
 }
 
 void MainWindow::timerTriggered()
@@ -92,6 +93,7 @@ void MainWindow::persistValidChanges()
     entry.email_address = ui->editEmailAddress->text();
     entry.nationality = ui->editNationality->text();
     entry.phone_number = ui->editPhoneNumber->text();
+    entry.profile_photo = ui->editProfilePhoto->text();
 
     if(entry.isValid())
     {
@@ -208,5 +210,18 @@ void MainWindow::on_action_Export_As_PDF_triggered()
 void MainWindow::on_actionE_xit_triggered()
 {
     this->close();
+}
+
+
+void MainWindow::on_btnFindProfilePhoto_clicked()
+{
+    QString filename = QFileDialog::getOpenFileName(this, tr("Find Profile Photo"),
+                                                    QStandardPaths::locate(QStandardPaths::StandardLocation::PicturesLocation, ""),
+                                                    "JPEG File (*.jpg *.jpeg)");
+
+    if(!filename.isEmpty())
+    {
+        ui->editProfilePhoto->setText(filename);
+    }
 }
 

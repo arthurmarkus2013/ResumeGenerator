@@ -17,9 +17,14 @@ find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets Sql LinguistTools
 
 configure_file(TemplateSchema.xsd TemplateSchema.xsd NEWLINE_STYLE LF)
 
+configure_file(image_1.jpg image_1.jpg NEWLINE_STYLE LF)
+configure_file(image_2.png image_2.png NEWLINE_STYLE LF)
+
 set(TS_FILES ResumeGenerator_en_US.ts)
 
 set(PROJECT_SOURCES
+        pathhelpers.h
+        pathhelpers.cpp
         ItemTemplateInfo.h
         templateparser.h
         templateparser.cpp

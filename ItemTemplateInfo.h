@@ -21,6 +21,18 @@ enum class ShapeType
   ELLIPSE
 };
 
+enum class ImageType
+{
+    PROFILE_PHOTO,
+    DECORATION
+};
+
+enum class ImageFileType
+{
+    JPEG,
+    PNG
+};
+
 enum class TextType
 {
     FULL_NAME,
@@ -194,17 +206,52 @@ struct TextInfo
 
 struct ImageInfo
 {
-  QString src_file;
-  QString mask_file;
+  ImageType type;
+  QString file_path;
+  QColor mask_color;
+  ImageFileType file_type;
 
   bool isValid()
   {
-    return !src_file.isEmpty();
+    bool validType = ((type == ImageType::PROFILE_PHOTO) || (type == ImageType::DECORATION));
+    bool validFileType = ((file_type == ImageFileType::JPEG) || (file_type == ImageFileType::PNG));
+
+    return (validType && validFileType && !file_path.isEmpty());
   }
 
   QString toString()
   {
-    return "ImageInfo {\n\tsrc_file: \"" + src_file + "\",\n\tmask_file: \"" + mask_file + "\"\n}";
+    QString imageName;
+    QString imageType;
+
+    switch(type)
+    {
+        case ImageType::PROFILE_PHOTO:
+            imageName = "ProfilePhoto";
+            break;
+        case ImageType::DECORATION:
+            imageName = "Decoration";
+            break;
+        default:
+            imageName = "Unknown";
+            break;
+    }
+
+    switch(file_type)
+    {
+        case ImageFileType::JPEG:
+            imageType = "JPEG";
+            break;
+        case ImageFileType::PNG:
+            imageType = "PNG";
+            break;
+        default:
+            imageType = "Unknown";
+            break;
+    }
+
+    return "ImageInfo {\n\ttype: \"" + imageName + "\",\n\tfile_path: \"" + file_path +
+           "\",\n\tmask_color: \"" + mask_color.name() + "\",\n\timage_type: \"" + imageType + "\"\n}";
   }
 };
 
@@ -303,7 +350,7 @@ struct ItemTemplateInfo
     }
 
     return "ItemTemplateInfo {\n\ttype: \"" + itemName + "\",\n\tpos: {\n\t\tx: " + QString::number(pos.x()) +
-           ",\n\t\ty: " + QString::number(pos.y()) + "},\n\t\tsize: {x: " + QString::number(size.x()) +
+           ",\n\t\ty: " + QString::number(pos.y()) + "\n\t},\n\tsize: {\n\t\twidth: " + QString::number(size.x()) +
            ",\n\t\theight: " + QString::number(size.y()) + "\n\t},\n\tpage_margin: " + QString::number(page_margin) +
            ",\n\ttext: " + text.toString() + ",\n\tshape: " + shape.toString() + ",\n\timage: " + image.toString() +
            ",\n\tpageOrientation: " + ((orientation == PageOrientation::PORTRAIT) ? "\"Portrait\"" : "\"Landscape\"") +

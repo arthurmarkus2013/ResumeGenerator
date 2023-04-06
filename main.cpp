@@ -3,10 +3,10 @@
 #include <QApplication>
 #include <QLocale>
 #include <QTranslator>
-#include <QDir>
 #include <QMessageBox>
 
 #include "databaseoperations.h"
+#include "pathhelpers.h"
 
 int main(int argc, char *argv[])
 {
@@ -22,7 +22,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    if(!DatabaseOperations(nullptr).connectToDatabase(a.applicationDirPath() + QDir::separator() + "store.db"))
+    if(!DatabaseOperations(nullptr).connectToDatabase(PathHelpers::combine({a.applicationDirPath(), "store.db"})))
     {
         QMessageBox::critical(nullptr, translator.tr("Fatal Error"), translator.tr("Failed to connect to a database"));
         return 1;

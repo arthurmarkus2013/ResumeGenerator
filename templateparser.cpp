@@ -10,6 +10,8 @@ using namespace xercesc;
 
 #include <QMap>
 
+#include "pathhelpers.h"
+
 TemplateParser::TemplateParser(QObject *parent)
     : QThread{parent}
 {
@@ -89,6 +91,8 @@ bool mapCircleAttributes(ItemTemplateInfo &info, QString attr_name, QString attr
     return true;
 }
 
+QString base_path = "";
+
 bool mapImageAttributes(ItemTemplateInfo &info, QString attr_name, QString attr_value)
 {
     if(attr_name == "x")
@@ -105,10 +109,32 @@ bool mapImageAttributes(ItemTemplateInfo &info, QString attr_name, QString attr_
         info.size.setY(attr_value.toInt());
     } else if(attr_name == "src")
     {
-        info.image.src_file = attr_value;
+        if((PathHelpers::getFileExtension(attr_value) == "jpeg") || (PathHelpers::getFileExtension(attr_value) == "jpg"))
+            info.image.file_type = ImageFileType::JPEG;
+        else if(PathHelpers::getFileExtension(attr_value) == "png")
+            info.image.file_type = ImageFileType::PNG;
+        else
+            return false;
+
+        if(PathHelpers::isAbsolutePath(attr_value))
+            info.image.file_path = attr_value;
+        else
+            info.image.file_path = PathHelpers::combine({base_path, attr_value});
     } else if(attr_name == "mask")
     {
-        info.image.mask_file = attr_value;
+        info.image.mask_color = QColor(attr_value);
+    } else if(attr_name == "type")
+    {
+        if(attr_value == "ProfilePhoto")
+        {
+            info.image.type = ImageType::PROFILE_PHOTO;
+        } else if(attr_value == "Decoration")
+        {
+            info.image.type = ImageType::DECORATION;
+        } else
+        {
+            return false;
+        }
     } else
     {
         return false;
@@ -568,6 +594,7 @@ void TemplateParser::run()
 
 void TemplateParser::parse(QString file_path)
 {
+    base_path = PathHelpers::getBasePath(file_path);
     this->tmpl_path = file_path;
     this->start();
 }

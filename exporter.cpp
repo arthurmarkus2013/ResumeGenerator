@@ -1,6 +1,7 @@
 #include "exporter.h"
 #include "databaseoperations.h"
 #include "hpdf.h"
+#include "pathhelpers.h"
 
 #include <QDateTime>
 #include <QStandardPaths>
@@ -271,18 +272,29 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                 switch(info.type)
                 {
                     case ItemType::IMAGE:
-                        HPDF_Image image, mask;
-                        image = HPDF_LoadJpegImageFromFile(pdf, info.image.src_file.toUtf8());
+                        HPDF_Image image;
 
-                        if(!info.image.mask_file.isEmpty())
+                        if(info.image.file_type == ImageFileType::JPEG)
+                            image = HPDF_LoadJpegImageFromFile(pdf, PathHelpers::convertToNativeSeparators(info.image.file_path).toUtf8());
+                        else if(info.image.file_type == ImageFileType::PNG)
+                            image = HPDF_LoadPngImageFromFile(pdf, PathHelpers::convertToNativeSeparators(info.image.file_path).toUtf8());
+                        else
+                            continue;
+
+                        if(image)
                         {
-                            mask = HPDF_LoadPngImageFromFile(pdf, info.image.mask_file.toUtf8());
-                            HPDF_Image_SetMaskImage(image, mask);
+                            if(info.image.mask_color.isValid())
+                            {
+                                HPDF_Image_SetColorMask(image, info.image.mask_color.redF(), info.image.mask_color.redF(),
+                                                        info.image.mask_color.greenF(), info.image.mask_color.greenF(),
+                                                        info.image.mask_color.blueF(), info.image.mask_color.blueF());
+                            }
+
+                            HPDF_Page_DrawImage(page, image, info.page_margin + info.pos.x(),
+                                                HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y()),
+                                                info.size.x(), info.size.y());
                         }
 
-                        HPDF_Page_DrawImage(page, image, info.page_margin + info.pos.x(),
-                                            HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y()),
-                                            info.size.y(), info.size.x());
                         continue;
                     case ItemType::TEXT:
                         HPDF_Font font;

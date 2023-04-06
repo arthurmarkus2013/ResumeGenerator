@@ -43,7 +43,8 @@ bool DatabaseOperations::InitializeDatabase()
             "nationality TEXT NOT NULL, "
             "address TEXT NOT NULL, "
             "email_address TEXT NOT NULL, "
-            "phone_number TEXT NOT NULL)"))
+            "phone_number TEXT NOT NULL, "
+            "profile_photo TEXT)"))
         return false;
 
     if(!query.exec("CREATE TABLE IF NOT EXISTS WorkExperience "
@@ -78,8 +79,8 @@ int DatabaseOperations::addEntry(Entry entry, EntryType entryType)
     {
         case EntryType::PERSONAL_INFO_ENTRY:
             if(query.prepare("INSERT INTO PersonalInfo (first_name, middle_name, last_name, birth_date, nationality, "
-                          "address, email_address, phone_number) VALUES (:first_name, :middle_name, :last_name, :birth_date, :nationality, "
-                          ":address, :email_address, :phone_number)"))
+                          "address, email_address, phone_number, profile_photo) VALUES (:first_name, :middle_name, "
+                          ":last_name, :birth_date, :nationality, :address, :email_address, :phone_number, :profile_photo)"))
             {
                 auto item = std::get<PersonalInfoEntry>(entry);
 
@@ -91,6 +92,7 @@ int DatabaseOperations::addEntry(Entry entry, EntryType entryType)
                 query.bindValue(":address", item.address);
                 query.bindValue(":email_address", item.email_address);
                 query.bindValue(":phone_number", item.phone_number);
+                query.bindValue(":profile_photo", item.profile_photo);
 
                 result = query.exec();
             }
@@ -146,8 +148,8 @@ bool DatabaseOperations::updateEntry(Entry entry, EntryType entryType)
         case EntryType::PERSONAL_INFO_ENTRY:
             if(query.prepare("UPDATE PersonalInfo SET first_name = :first_name, middle_name = :middle_name, "
                               "last_name = :last_name, birth_date = :birth_date, nationality = :nationality, "
-                              "address = :address, email_address = :email_address, phone_number = :phone_number"
-                              " WHERE personal_info_id = :personal_info_id"))
+                              "address = :address, email_address = :email_address, phone_number = :phone_number, "
+                              "profile_photo = :profile_photo WHERE personal_info_id = :personal_info_id"))
             {
                 auto item = std::get<PersonalInfoEntry>(entry);
 
@@ -162,6 +164,7 @@ bool DatabaseOperations::updateEntry(Entry entry, EntryType entryType)
                 query.bindValue(":address", item.address);
                 query.bindValue(":email_address", item.email_address);
                 query.bindValue(":phone_number", item.phone_number);
+                query.bindValue(":profile_photo", item.profile_photo);
 
                 query.bindValue(":personal_info_id", item.personal_info_id);
 
@@ -232,7 +235,8 @@ bool DatabaseOperations::removeEntry(Entry entry, EntryType entryType)
                               "middle_name = :middle_name AND last_name = :last_name AND "
                               "birth_date = :birth_date AND nationality = :nationality AND "
                               "address = :address AND email_address = :email_address AND "
-                              "phone_number = :phone_number AND personal_info_id = :personal_info_id"))
+                              "phone_number = :phone_number AND profile_photo = :profile_photo AND "
+                              "personal_info_id = :personal_info_id"))
             {
                 auto item = std::get<PersonalInfoEntry>(entry);
 
@@ -244,6 +248,7 @@ bool DatabaseOperations::removeEntry(Entry entry, EntryType entryType)
                 query.bindValue(":address", item.address);
                 query.bindValue(":email_address", item.email_address);
                 query.bindValue(":phone_number", item.phone_number);
+                query.bindValue(":profile_photo", item.profile_photo);
 
                 query.bindValue(":personal_info_id", item.personal_info_id);
 
@@ -305,7 +310,7 @@ QList<DatabaseOperations::Entry> DatabaseOperations::getEntries(EntryType entryT
     {
         case EntryType::PERSONAL_INFO_ENTRY:
             if(query.exec("SELECT personal_info_id, first_name, middle_name, last_name, birth_date, nationality, "
-                           "address, email_address, phone_number FROM PersonalInfo"))
+                           "address, email_address, phone_number, profile_photo FROM PersonalInfo"))
             {
                 while(query.next())
                 {
@@ -320,6 +325,7 @@ QList<DatabaseOperations::Entry> DatabaseOperations::getEntries(EntryType entryT
                     entry.address = query.value(6).toString();
                     entry.email_address = query.value(7).toString();
                     entry.phone_number = query.value(8).toString();
+                    entry.profile_photo = query.value(9).toString();
 
                     retVal.append(entry);
                 }
