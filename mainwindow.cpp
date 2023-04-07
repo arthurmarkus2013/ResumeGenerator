@@ -217,7 +217,7 @@ void MainWindow::on_btnFindProfilePhoto_clicked()
 {
     QString filename = QFileDialog::getOpenFileName(this, tr("Find Profile Photo"),
                                                     QStandardPaths::locate(QStandardPaths::StandardLocation::PicturesLocation, ""),
-                                                    "JPEG File (*.jpg *.jpeg)");
+                                                    "JPEG File (*.jpg *.jpeg);;PNG File (*.png)");
 
     if(!filename.isEmpty())
     {

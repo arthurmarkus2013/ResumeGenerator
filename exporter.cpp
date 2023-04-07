@@ -227,6 +227,25 @@ QString findText(TextType type, int index)
     return retVal;
 }
 
+QString findImageFilePath(ItemTemplateInfo &info)
+{
+    QString retVal = info.image.file_path;
+
+    if(info.image.type == ImageType::PROFILE_PHOTO)
+    {
+        DatabaseOperations db;
+
+        auto data = db.getEntries(EntryType::PERSONAL_INFO_ENTRY);
+
+        if(data.empty())
+            return QString();
+
+        retVal = std::get<PersonalInfoEntry>(data.at(0)).profile_photo;
+    }
+
+    return PathHelpers::convertToNativeSeparators(retVal);
+}
+
 bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
 {
     HPDF_Doc pdf = HPDF_New(pdf_error_handler, nullptr);
@@ -275,9 +294,9 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                         HPDF_Image image;
 
                         if(info.image.file_type == ImageFileType::JPEG)
-                            image = HPDF_LoadJpegImageFromFile(pdf, PathHelpers::convertToNativeSeparators(info.image.file_path).toUtf8());
+                            image = HPDF_LoadJpegImageFromFile(pdf, findImageFilePath(info).toUtf8());
                         else if(info.image.file_type == ImageFileType::PNG)
-                            image = HPDF_LoadPngImageFromFile(pdf, PathHelpers::convertToNativeSeparators(info.image.file_path).toUtf8());
+                            image = HPDF_LoadPngImageFromFile(pdf, findImageFilePath(info).toUtf8());
                         else
                             continue;
 
@@ -291,7 +310,7 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                             }
 
                             HPDF_Page_DrawImage(page, image, info.page_margin + info.pos.x(),
-                                                HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y()),
+                                                HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y() + info.size.y()),
                                                 info.size.x(), info.size.y());
                         }
 
