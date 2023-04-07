@@ -312,6 +312,17 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                             HPDF_Page_DrawImage(page, image, info.page_margin + info.pos.x(),
                                                 HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y() + info.size.y()),
                                                 info.size.x(), info.size.y());
+
+                            if(info.image.border > 0)
+                            {
+                                HPDF_Page_SetLineWidth(page, info.image.border);
+                                HPDF_Page_SetRGBStroke(page, info.image.border_color.redF(), info.image.border_color.greenF(),
+                                                       info.image.border_color.blueF());
+                                HPDF_Page_Rectangle(page, info.page_margin + info.pos.x(),
+                                                    HPDF_Page_GetHeight(page) - (info.page_margin + info.pos.y() + info.size.y()),
+                                                    info.size.x(), info.size.y());
+                                HPDF_Page_Stroke(page);
+                            }
                         }
 
                         continue;
@@ -333,33 +344,52 @@ bool Exporter::exportAsPDF(QString path, QList<ItemTemplateInfo> infos)
                         switch(info.shape.type)
                         {
                             case ShapeType::RECTANGLE:
+                                HPDF_Page_SetLineWidth(page, info.shape.border);
                                 HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
-                                                 info.shape.fill_color.blueF());
+                                                        info.shape.fill_color.blueF());
+                                HPDF_Page_SetRGBStroke(page, info.shape.border_color.redF(), info.shape.border_color.greenF(),
+                                                        info.shape.border_color.blueF());
                                 HPDF_Page_Rectangle(page, info.page_margin + info.shape.pos.x(),
                                                     HPDF_Page_GetHeight(page) - (info.page_margin + info.shape.pos.y()),
                                                     info.shape.size.x(), info.shape.size.y());
-                                HPDF_Page_Fill(page);
+                                if(info.shape.border > 0)
+                                    HPDF_Page_FillStroke(page);
+                                else
+                                    HPDF_Page_Fill(page);
                                 continue;
                             case ShapeType::CIRCLE:
+                                HPDF_Page_SetLineWidth(page, info.shape.border);
                                 HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
                                                      info.shape.fill_color.blueF());
+                                HPDF_Page_SetRGBStroke(page, info.shape.border_color.redF(), info.shape.border_color.greenF(),
+                                                       info.shape.border_color.blueF());
                                 HPDF_Page_Circle(page, info.page_margin + info.shape.pos.x(),
                                                  HPDF_Page_GetHeight(page) - (info.page_margin + info.shape.pos.y()), info.shape.size.x());
-                                HPDF_Page_Fill(page);
+                                if(info.shape.border > 0)
+                                    HPDF_Page_FillStroke(page);
+                                else
+                                    HPDF_Page_Fill(page);
                                 continue;
                             case ShapeType::ELLIPSE:
+                                HPDF_Page_SetLineWidth(page, info.shape.border);
                                 HPDF_Page_SetRGBFill(page, info.shape.fill_color.redF(), info.shape.fill_color.greenF(),
                                                      info.shape.fill_color.blueF());
+                                HPDF_Page_SetRGBStroke(page, info.shape.border_color.redF(), info.shape.border_color.greenF(),
+                                                       info.shape.border_color.blueF());
                                 HPDF_Page_Ellipse(page, info.page_margin + info.shape.pos.x(),
                                                   HPDF_Page_GetHeight(page) - (info.page_margin + info.shape.pos.y()),
                                                   info.shape.size.x(), info.shape.size.y());
-                                HPDF_Page_Fill(page);
+                                if(info.shape.border > 0)
+                                    HPDF_Page_FillStroke(page);
+                                else
+                                    HPDF_Page_Fill(page);
                                 continue;
                             default:
                                 continue;
                         }
                         continue;
                     case ItemType::LINE:
+                        HPDF_Page_SetLineWidth(page, info.line.thickness);
                         HPDF_Page_MoveTo(page, info.page_margin + info.line.startPos.x(),
                                          HPDF_Page_GetHeight(page) - (info.page_margin + info.line.startPos.y()));
                         HPDF_Page_LineTo(page, info.line.endPos.x(), info.line.endPos.y());

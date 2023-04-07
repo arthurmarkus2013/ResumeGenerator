@@ -88,16 +88,16 @@
         </text>
     </page>
     <page>
-        <ellipse x="190" y="290" width="90" height="100" color="#cc00ff" />
-        <rectangle x="70" y="70" width="30" height="30" color="#ffff00" />
-        <ellipse x="250" y="390" width="90" height="100" color="#00ffcc" />
+        <ellipse x="190" y="290" width="90" height="100" color="#cc00ff" border="1" borderColor="#c9c9c9" />
+        <rectangle x="70" y="70" width="30" height="30" color="#ffff00" border="1" borderColor="#ff0ff1" />
+        <ellipse x="250" y="390" width="90" height="100" color="#00ffcc" border="1" borderColor="#f1ffcc" />
         <text x="50" y="350" width="200" height="370" color="#ffff00" type="FullName">
             Est quis esse irure ad. Et amet labore duis nostrud proident amet est cillum quis labore. 
             Ad incididunt in sunt ullamco mollit proident reprehenderit laboris enim velit.
         </text>
-        <circle x="100" y="500" radius="50" color="#ccff00" />
-        <image x="50" y="50" src="image_1.jpg" mask="#fff" width="100" height="100" type="Decoration" />
-        <image x="150" y="150" src="image_2.png" width="100" height="100" type="ProfilePhoto" />
+        <circle x="100" y="500" radius="50" color="#ccff00" border="1" />
+        <image x="50" y="50" src="image_1.jpg" mask="#fff" width="100" height="100" type="Decoration" border="1" />
+        <image x="150" y="150" src="image_2.png" width="100" height="100" type="ProfilePhoto" border="1" />
     </page>
     <page>
         <ellipse x="190" y="290" width="90" height="100" color="#cc00ff" />
@@ -109,8 +109,8 @@
         </rectangle>
         <ellipse x="250" y="390" width="90" height="100" color="#00ffcc" />
         <circle x="100" y="500" radius="50" color="#ccff00" />
-        <line fromX="90" fromY="90" toX="450" toY="450" color="#ff00ff" />
-        <line fromX="110" fromY="110" toX="470" toY="470" color="#ff00ff" />
+        <line fromX="90" fromY="90" toX="450" toY="450" color="#ffff00" thickness="5" />
+        <line fromX="110" fromY="110" toX="470" toY="470" color="#00ffff" thickness="3" />
         <line fromX="130" fromY="130" toX="490" toY="490" color="#ff00ff" />
     </page>
 </document>

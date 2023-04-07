@@ -60,6 +60,12 @@ bool mapRectangleAndEllipseAttributes(ItemTemplateInfo &info, QString attr_name,
     } else if(attr_name == "color")
     {
         info.shape.fill_color = QColor(attr_value);
+    } else if(attr_name == "border")
+    {
+        info.shape.border = attr_value.toInt();
+    } else if(attr_name == "borderColor")
+    {
+        info.shape.border_color = QColor(attr_value);
     } else
     {
         return false;
@@ -83,6 +89,12 @@ bool mapCircleAttributes(ItemTemplateInfo &info, QString attr_name, QString attr
     } else if(attr_name == "color")
     {
         info.shape.fill_color = QColor(attr_value);
+    } else if(attr_name == "border")
+    {
+        info.shape.border = attr_value.toInt();
+    } else if(attr_name == "borderColor")
+    {
+        info.shape.border_color = QColor(attr_value);
     } else
     {
         return false;
@@ -135,6 +147,12 @@ bool mapImageAttributes(ItemTemplateInfo &info, QString attr_name, QString attr_
         {
             return false;
         }
+    } else if(attr_name == "border")
+    {
+        info.image.border = attr_value.toInt();
+    } else if(attr_name == "borderColor")
+    {
+        info.image.border_color = QColor(attr_value);
     } else
     {
         return false;
@@ -266,7 +284,10 @@ bool mapLineAttributes(ItemTemplateInfo &info, QString attr_name, QString attr_v
         info.line.endPos.setY(attr_value.toInt());
     } else if(attr_name == "color")
     {
-        info.text.color = QColor(attr_value);
+        info.line.color = QColor(attr_value);
+    } else if(attr_name == "thickness")
+    {
+        info.line.thickness = attr_value.toInt();
     } else
     {
         return false;

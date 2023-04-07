@@ -52,6 +52,8 @@
         <xs:attribute name="height" type="xs:positiveInteger"
             use="required" />
         <xs:attribute name="color" type="xs:string" use="required" />
+        <xs:attribute name="border" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="borderColor" type="xs:string" use="optional" />
     </xs:complexType>
     <xs:complexType name="ellipseType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -69,6 +71,8 @@
         <xs:attribute name="height" type="xs:positiveInteger"
             use="required" />
         <xs:attribute name="color" type="xs:string" use="required" />
+        <xs:attribute name="border" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="borderColor" type="xs:string" use="optional" />
     </xs:complexType>
     <xs:complexType name="circleType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -84,6 +88,8 @@
         <xs:attribute name="radius" type="xs:positiveInteger"
             use="required" />
         <xs:attribute name="color" type="xs:string" use="required" />
+        <xs:attribute name="border" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="borderColor" type="xs:string" use="optional" />
     </xs:complexType>
     <xs:complexType name="imageType">
         <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -103,6 +109,8 @@
         <xs:attribute name="src" type="xs:string" use="required" />
         <xs:attribute name="mask" type="xs:string" use="optional" />
         <xs:attribute name="type" type="imageTypeEnum" use="required" />
+        <xs:attribute name="border" type="xs:positiveInteger" use="optional" />
+        <xs:attribute name="borderColor" type="xs:string" use="optional" />
     </xs:complexType>
     <xs:complexType name="textType">
         <xs:simpleContent>
@@ -139,7 +147,8 @@
                 <xs:attribute name="toY" type="xs:positiveInteger"
                     use="required" />
                 <xs:attribute name="color" type="xs:string"
-                    use="optional" />
+                    use="optional" />    
+                <xs:attribute name="thickness" type="xs:positiveInteger" use="optional" />
             </xs:extension>
         </xs:simpleContent>
     </xs:complexType>

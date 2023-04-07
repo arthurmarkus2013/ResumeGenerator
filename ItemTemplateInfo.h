@@ -63,6 +63,8 @@ struct ShapeInfo
   QColor fill_color;
   QPoint pos;
   QPoint size;
+  int border = 0;
+  QColor border_color = Qt::GlobalColor::black;
 
   bool isValid()
   {
@@ -97,7 +99,8 @@ struct ShapeInfo
            "\",\n\tpos: {\n\t\tx: " + QString::number(pos.x()) +
            ",\n\t\ty: " + QString::number(pos.y()) +
            "\n\t},\n\tsize: {\n\t\tx: " + QString::number(size.x()) +
-           ",\n\t\ty: " + QString::number(size.y()) + "\n\t}\n}";
+           ",\n\t\ty: " + QString::number(size.y()) + "\n\t," +
+           "\n\tborder: " + QString::number(border) + ",\n\tboder_color: \"" + border_color.name() + "\"\n}\n}";
   }
 };
 
@@ -210,6 +213,8 @@ struct ImageInfo
   QString file_path;
   QColor mask_color;
   ImageFileType file_type;
+  int border = 0;
+  QColor border_color = Qt::GlobalColor::black;
 
   bool isValid()
   {
@@ -251,7 +256,8 @@ struct ImageInfo
     }
 
     return "ImageInfo {\n\ttype: \"" + imageName + "\",\n\tfile_path: \"" + file_path +
-           "\",\n\tmask_color: \"" + mask_color.name() + "\",\n\timage_type: \"" + imageType + "\"\n}";
+           "\",\n\tmask_color: \"" + mask_color.name() + "\",\n\timage_type: \"" + imageType + "\"" +
+           ",\n\tborder: " + QString::number(border) + ",\n\tborder_color: \"" + border_color.name() + "\"\n}";
   }
 };
 
@@ -260,10 +266,11 @@ struct LineInfo
   QPoint startPos;
   QPoint endPos;
   QColor color;
+  int thickness = 1;
 
   bool isValid()
   {
-    return ((startPos.x() >= 0) && (startPos.y() >= 0) && (endPos.x() > 0) && (endPos.y() > 0));
+    return ((startPos.x() >= 0) && (startPos.y() >= 0) && (endPos.x() > 0) && (endPos.y() > 0) && (thickness > 0));
   }
 
   QString toString()
@@ -272,7 +279,8 @@ struct LineInfo
            ",\n\tfromY: " + QString::number(startPos.y()) +
            ",\n\ttoX: " + QString::number(endPos.x()) +
            ",\n\ttoY: " + QString::number(endPos.y()) +
-           ",\n\tcolor: " + color.name() + "\n}";
+           ",\n\tcolor: " + color.name() +
+           ",\n\tthickness: " + QString::number(thickness) + "\n}";
   }
 };
 
