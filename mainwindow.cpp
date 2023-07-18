@@ -39,7 +39,7 @@ MainWindow::~MainWindow()
 {
     timer->stop();
 
-    delete lblTepmplatePath;
+    delete lblTemplatePath;
     delete lblCurrentStatus;
     delete weModel;
     delete eduModel;
@@ -124,19 +124,19 @@ void MainWindow::closeEvent(QCloseEvent *event)
 void MainWindow::populateStatusBar()
 {
     lblCurrentStatus = new QLabel(ui->statusBar);
-    lblTepmplatePath = new QLabel(ui->statusBar);
+    lblTemplatePath = new QLabel(ui->statusBar);
 
     lblCurrentStatus->setText(tr("Ready"));
-    lblTepmplatePath->setText(tr("Selected Template: (none)"));
+    lblTemplatePath->setText(tr("Selected Template: (none)"));
 
     ui->statusBar->insertWidget(0, lblCurrentStatus, 100);
-    ui->statusBar->insertWidget(1, lblTepmplatePath, 250);
+    ui->statusBar->insertWidget(1, lblTemplatePath, 250);
 }
 
 void MainWindow::reportParsingError(QString msg)
 {
     lblCurrentStatus->setText(tr("Templlate parsing failed..."));
-    lblTepmplatePath->setText(tr("Selected Template: (none)"));
+    lblTemplatePath->setText(tr("Selected Template: (none)"));
 
     QMessageBox::critical(this, tr("Parsing Error"), msg);
 }
@@ -181,7 +181,7 @@ void MainWindow::on_actionChoose_Template_triggered()
     QString filename = QFileDialog::getOpenFileName(this, tr("Choose Resume Template"),
                                                     QStandardPaths::locate(QStandardPaths::StandardLocation::DocumentsLocation, ""),
                                                     "Resume Generator Template File (*.rgtf)");
-    lblTepmplatePath->setText(tr("Selected Template: ") + filename);
+    lblTemplatePath->setText(tr("Selected Template: ") + filename);
 
     if(!filename.isEmpty())
     {

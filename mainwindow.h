@@ -58,7 +58,7 @@ private:
     QList<ItemTemplateInfo> infos;
     TemplateParser *tmplParser;
     Exporter *exporter;
-    QLabel *lblTepmplatePath;
+    QLabel *lblTemplatePath;
     QLabel *lblCurrentStatus;
     bool hasInvalidData = false;
 };
