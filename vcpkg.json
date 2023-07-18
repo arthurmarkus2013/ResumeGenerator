@@ -1,6 +1,8 @@
 {
-    "name": "ResumeGenerator",
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+    "name": "resume-generator",
     "version": "1.0",
+    "builtin-baseline": "6359494ca1b34423786da18365f9d79963b0340a",
     "dependencies": [
         {
             "name": "libharu",
